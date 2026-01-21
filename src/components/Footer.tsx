@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Phone, Instagram, Drumstick, Heart } from 'lucide-react';
+import { Phone, Instagram, Heart } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -12,8 +12,12 @@ export default function Footer() {
             viewport={{ once: true }}
             className="text-center md:text-left"
           >
-            <div className="flex items-center justify-center md:justify-start gap-2 mb-4">
-              <Drumstick className="text-pink-400" size={32} />
+            <div className="flex items-center justify-center md:justify-start gap-4 mb-4">
+              <img
+                src="/sendai_logo.png"
+                alt="Sendai Logo"
+                className="w-12 h-12 object-contain rounded-lg"
+              />
               <h3 className="text-2xl font-bold">Mutharaselvi</h3>
             </div>
             <p className="text-pink-200">

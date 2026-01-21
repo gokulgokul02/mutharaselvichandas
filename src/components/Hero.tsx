@@ -1,9 +1,18 @@
 import { motion } from 'framer-motion';
-import { Drumstick, Phone } from 'lucide-react';
+import { Phone } from 'lucide-react';
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-pink-600 via-pink-500 to-rose-600">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <div className="absolute inset-0 z-0">
+        <img
+          src="/gallery3.heic"
+          alt="Background"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-pink-900/80 via-pink-600/70 to-rose-900/80" />
+      </div>
+
       <motion.div
         animate={{
           scale: [1, 1.5, 1],
@@ -46,15 +55,19 @@ export default function Hero() {
         >
           <motion.div
             animate={{
-              rotate: [0, 10, -10, 0],
+              rotate: [0, 5, -5, 0],
             }}
             transition={{
-              duration: 2,
+              duration: 3,
               repeat: Infinity,
-              repeatDelay: 1,
+              ease: "easeInOut"
             }}
           >
-            <Drumstick size={100} className="text-white drop-shadow-2xl" />
+            <img
+              src="/sendai_logo.png"
+              alt="Sendai Logo"
+              className="w-32 h-32 md:w-40 md:h-40 object-contain drop-shadow-2xl rounded-2xl"
+            />
           </motion.div>
         </motion.div>
 

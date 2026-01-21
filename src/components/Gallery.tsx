@@ -7,12 +7,12 @@ export default function Gallery() {
   const isInView = useInView(ref, { once: true, amount: 0.2 });
 
   const images = [
-    { src: '/sendai.jpeg', alt: 'Mutharaselvi Sandai Melam Performance' },
-    { src: '/sendai.jpeg', alt: 'Team Performance' },
-    { src: '/sendai.jpeg', alt: 'Festival Performance' },
-    { src: '/sendai.jpeg', alt: 'Wedding Performance' },
-    { src: '/sendai.jpeg', alt: 'Cultural Event' },
-    { src: '/sendai.jpeg', alt: 'Temple Festival' },
+    { src: '/gallery1.webp', alt: 'Traditional Performance' },
+    { src: '/gallery2.heic', alt: 'Sendai Melam Team' },
+    { src: '/gallery3.heic', alt: 'Cultural Celebration' },
+    { src: '/gallery4.heic', alt: 'Festival Moments' },
+    { src: '/gallery5.heic', alt: 'Rhythmic Drums' },
+    { src: '/gallery6.heic', alt: 'Grand Performance' },
   ];
 
   return (

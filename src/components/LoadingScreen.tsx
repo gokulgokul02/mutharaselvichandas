@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { Drumstick } from 'lucide-react';
 
 interface LoadingScreenProps {
   onLoadingComplete: () => void;
@@ -31,17 +30,10 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
           className="relative mx-auto mb-8"
         >
           <div className="relative">
-            <Drumstick size={80} className="text-white" />
-            <motion.div
-              animate={{
-                scale: [1, 1.5, 1],
-                opacity: [0.5, 0, 0.5],
-              }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-              }}
-              className="absolute inset-0 rounded-full bg-white"
+            <img
+              src="/sendai_logo.png"
+              alt="Logo"
+              className="w-24 h-24 object-contain drop-shadow-xl"
             />
           </div>
         </motion.div>
