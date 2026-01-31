@@ -51,9 +51,15 @@ export default function About() {
               animate={isInView ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
               whileHover={{ scale: 1.05, rotate: 2 }}
-              className="bg-white p-6 rounded-2xl shadow-lg border-2 border-pink-100 hover:border-pink-300 transition-all"
+              className="bg-white p-6 rounded-2xl shadow-lg border-2 border-pink-100 hover:border-pink-300 transition-all flex flex-col items-center justify-center"
             >
-              <feature.icon className="w-12 h-12 text-pink-600 mx-auto mb-3" />
+              <div className="w-16 h-16 mb-4 flex items-center justify-center">
+                {feature.text === 'Authentic Sound' ? (
+                  <img src="/sendai_logo.png" alt="Sendai Logo" className="w-full h-full object-contain" />
+                ) : (
+                  <feature.icon className="w-12 h-12 text-pink-600" />
+                )}
+              </div>
               <p className="text-center font-semibold text-gray-800">{feature.text}</p>
             </motion.div>
           ))}

@@ -1,20 +1,22 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { Instagram as InstagramIcon, Play } from 'lucide-react';
+import { Instagram as InstagramIcon, Play, X } from 'lucide-react';
 
 export default function Instagram() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const [selectedVideo, setSelectedVideo] = useState<{ src: string, title: string } | null>(null);
 
-  const instagramPosts = [
-    'https://www.instagram.com/p/sample1/',
-    'https://www.instagram.com/p/sample2/',
-    'https://www.instagram.com/p/sample3/',
+  const videos = [
+    { src: '/Video1.mp4', title: 'Grand Entry' },
+    { src: '/Video2.mp4', title: 'Temple Celebration' },
+    { src: '/Video3.mp4', title: 'Cultural Performance' },
   ];
 
   return (
-    <section ref={ref} className="py-20 px-4 bg-gradient-to-br from-pink-50 to-rose-50">
+    <section ref={ref} className="py-20 px-4 bg-gradient-to-br from-pink-50 to-rose-50 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -74,37 +76,94 @@ export default function Instagram() {
           </motion.div>
         </motion.a>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {instagramPosts.map((post, index) => (
-            <motion.a
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {videos.map((video, index) => (
+            <motion.div
               key={index}
-              href="https://www.instagram.com/muthara_selvi_chendas"
-              target="_blank"
-              rel="noopener noreferrer"
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-              whileHover={{ y: -10 }}
-              className="group relative aspect-square bg-gradient-to-br from-pink-200 to-rose-200 rounded-2xl shadow-xl overflow-hidden cursor-pointer"
+              onClick={() => setSelectedVideo(video)}
+              className="group relative bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 cursor-pointer"
             >
-              <div className="absolute inset-0 flex items-center justify-center">
-                <motion.div
-                  whileHover={{ scale: 1.2 }}
-                  className="w-20 h-20 bg-white/90 rounded-full flex items-center justify-center shadow-lg"
+              <div className="aspect-video relative overflow-hidden bg-gray-900">
+                <video
+                  className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-105"
+                  preload="metadata"
                 >
-                  <Play className="w-10 h-10 text-pink-600" fill="currentColor" />
-                </motion.div>
+                  <source src={video.src} type="video/mp4" />
+                </video>
+
+                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-full bg-pink-500/90 flex items-center justify-center text-white transform group-hover:scale-110 transition-transform shadow-lg">
+                    <Play className="w-8 h-8 fill-current translate-x-1" />
+                  </div>
+                </div>
               </div>
 
-              <div className="absolute inset-0 bg-gradient-to-t from-pink-900/50 to-transparent" />
-
-              <div className="absolute bottom-4 left-4 right-4 text-white">
-                <p className="font-semibold">Live Performance {index + 1}</p>
+              <div className="p-6 bg-white">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-bold text-gray-800 group-hover:text-pink-600 transition-colors">
+                    {video.title}
+                  </h3>
+                  <span className="text-gray-400 text-sm">Live Performance</span>
+                </div>
               </div>
-            </motion.a>
+
+              <div className="absolute top-4 left-4 z-10">
+                <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-pink-600 text-xs font-bold rounded-full shadow-sm border border-pink-100">
+                  LIVE
+                </span>
+              </div>
+            </motion.div>
           ))}
         </div>
       </div>
+
+      <AnimatePresence>
+        {selectedVideo && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-4 md:p-10"
+            onClick={() => setSelectedVideo(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative w-full max-w-5xl max-h-full flex flex-col items-center justify-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setSelectedVideo(null)}
+                className="absolute -top-12 right-0 text-white/70 hover:text-white transition-colors"
+              >
+                <X size={40} />
+              </button>
+
+              <div className="relative w-full h-full flex items-center justify-center rounded-2xl overflow-hidden bg-black">
+                <video
+                  key={selectedVideo.src}
+                  className="max-w-full max-h-[85vh] shadow-2xl"
+                  controls
+                  autoPlay
+                  preload="auto"
+                >
+                  <source src={selectedVideo.src} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+
+              <div className="mt-6 text-center">
+                <h3 className="text-2xl font-bold text-white mb-2">{selectedVideo.title}</h3>
+                <p className="text-gray-400">Watch our live performance in full detail</p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

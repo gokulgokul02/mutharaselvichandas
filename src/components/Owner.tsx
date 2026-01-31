@@ -1,116 +1,143 @@
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { Phone, User, Drumstick } from 'lucide-react';
+import { Phone, Instagram, ShieldCheck, Award, Users } from 'lucide-react';
 
 export default function Owner() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.5 });
+  const isInView = useInView(ref, { once: true, amount: 0.2 });
+  const containerRef = useRef(null);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+
+  const y1 = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [0, 50]);
 
   return (
-    <section ref={ref} className="py-20 px-4 bg-white">
-      <div className="max-w-4xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+    <section ref={containerRef} className="relative py-24 px-4 bg-white overflow-hidden">
+      {/* Background Decorative Text */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none">
+        <motion.h2
+          style={{ y: y2 }}
+          className="text-[15rem] md:text-[25rem] font-black text-gray-50 leading-none"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Meet Our <span className="text-pink-600">Founder</span>
-          </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-pink-500 to-rose-600 mx-auto" />
-        </motion.div>
+          SUDAR
+        </motion.h2>
+      </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="relative bg-gradient-to-br from-pink-50 to-rose-50 p-8 md:p-12 rounded-3xl shadow-2xl border-4 border-pink-200"
-        >
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20" ref={ref}>
+
+          {/* Left Side: Full Pose Image with Effects */}
           <motion.div
-            animate={{
-              rotate: [0, 360],
-            }}
-            transition={{
-              duration: 20,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-            className="absolute -top-6 -right-6 text-pink-300"
+            className="w-full lg:w-1/2 relative flex justify-center"
+            initial={{ opacity: 0, x: -50 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <Drumstick size={80} />
+            <div className="relative w-full max-w-[500px] aspect-[3/4]">
+              {/* Decorative Geometric Shapes */}
+              <div className="absolute -top-10 -left-10 w-40 h-40 bg-pink-100 rounded-full blur-3xl opacity-60 animate-pulse" />
+              <div className="absolute -bottom-20 -right-10 w-60 h-60 bg-rose-100 rounded-full blur-3xl opacity-60" />
+
+              {/* Image Container */}
+              <motion.div
+                style={{ y: y1 }}
+                className="relative z-10 w-full h-full rounded-[3rem] overflow-hidden shadow-[0_20px_50px_rgba(236,72,153,0.2)] border-8 border-white group"
+              >
+                <img
+                  src="/sudar.png"
+                  alt="M. Sudar - Founder"
+                  className="w-full h-full object-cover object-top transform group-hover:scale-110 transition-transform duration-1000"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-pink-900/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              </motion.div>
+
+              {/* Floating Badge */}
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={isInView ? { scale: 1 } : {}}
+                transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.8 }}
+                className="absolute -bottom-6 -left-6 z-20 bg-white p-4 rounded-2xl shadow-xl border border-pink-50"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-pink-600 rounded-xl flex items-center justify-center text-white">
+                    <Award size={24} />
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500 font-bold uppercase tracking-wider">Experience</p>
+                    <p className="text-lg font-bold text-gray-900">5+ Years</p>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
           </motion.div>
 
-          <div className="flex flex-col md:flex-row items-center gap-8">
-            <motion.div
-              whileHover={{ scale: 1.05, rotate: 5 }}
-              className="relative"
-            >
-              <div className="w-32 h-32 bg-gradient-to-br from-pink-500 to-rose-600 rounded-full flex items-center justify-center shadow-2xl">
-                <User size={64} className="text-white" />
-              </div>
-              <motion.div
-                animate={{
-                  scale: [1, 1.2, 1],
-                  opacity: [0.5, 0, 0.5],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                }}
-                className="absolute inset-0 border-4 border-pink-400 rounded-full"
-              />
-            </motion.div>
+          {/* Right Side: Content & Contact */}
+          <motion.div
+            className="w-full lg:w-1/2"
+            initial={{ opacity: 0, x: 50 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+          >
+            <div className="mb-8">
+              <span className="text-pink-600 font-bold tracking-[0.2em] uppercase mb-4 block">Our Visionary</span>
+              <h2 className="text-5xl md:text-7xl font-black text-gray-900 mb-6 leading-tight">
+                M. <span className="text-pink-600">Sudar</span>
+              </h2>
+              <p className="text-2xl text-gray-600 font-medium mb-8">Founder & Chief Organizer</p>
 
-            <div className="flex-1 text-center md:text-left">
-              <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-                M. Sudar
-              </h3>
-              <p className="text-xl text-pink-600 mb-6 font-semibold">
-                Founder & Organizer
+              <div className="h-1.5 w-24 bg-gradient-to-r from-pink-500 to-rose-600 rounded-full mb-10" />
+
+              <p className="text-xl text-gray-600 leading-relaxed mb-10 italic">
+                "We don't just provide music; we bring the soul of tradition to your most precious moments. Every beat from our Chendas is a celebration of life."
               </p>
+            </div>
 
-              <div className="space-y-3">
+            {/* Glassmorphic Contact Card */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {[
+                { label: 'Primary Contact', value: '9360019581', icon: Phone, href: 'tel:+919360019581' },
+                { label: 'Contact', value: '9443757882', icon: Phone, href: 'tel:+919443757882' },
+                { label: 'Contact', value: '9025383124', icon: Phone, href: 'tel:+919025383124' },
+                { label: 'Instagram', value: '@muthara_selvi', icon: Instagram, href: 'https://www.instagram.com/muthara_selvi_chendas' },
+              ].map((item, idx) => (
                 <motion.a
-                  href="tel:+919360019581"
-                  whileHover={{ scale: 1.05, x: 10 }}
-                  className="flex items-center gap-3 bg-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all group"
+                  key={idx}
+                  href={item.href}
+                  target={item.href.startsWith('http') ? "_blank" : "_self"}
+                  rel="noopener noreferrer"
+                  whileHover={{ y: -5, scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="p-5 bg-white/40 backdrop-blur-md border border-white/60 rounded-3xl shadow-lg hover:shadow-pink-100 hover:bg-white/80 transition-all flex items-center gap-4"
                 >
-                  <Phone className="text-pink-600 group-hover:animate-pulse" />
-                  <span className="font-semibold text-gray-800">9360019581</span>
+                  <div className="w-12 h-12 bg-pink-100 rounded-2xl flex items-center justify-center text-pink-600">
+                    <item.icon size={20} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{item.label}</p>
+                    <p className="text-sm font-bold text-gray-800">{item.value}</p>
+                  </div>
                 </motion.a>
+              ))}
+            </div>
 
-                <motion.a
-                  href="tel:+919443757882"
-                  whileHover={{ scale: 1.05, x: 10 }}
-                  className="flex items-center gap-3 bg-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all group"
-                >
-                  <Phone className="text-pink-600 group-hover:animate-pulse" />
-                  <span className="font-semibold text-gray-800">9443757882</span>
-                </motion.a>
-
-                <motion.a
-                  href="tel:+919025383124"
-                  whileHover={{ scale: 1.05, x: 10 }}
-                  className="flex items-center gap-3 bg-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all group"
-                >
-                  <Phone className="text-pink-600 group-hover:animate-pulse" />
-                  <span className="font-semibold text-gray-800">9025383124</span>
-                </motion.a>
+            {/* Trust Badges */}
+            <div className="mt-12 flex flex-wrap items-center gap-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+              <div className="flex items-center gap-2">
+                <ShieldCheck size={20} className="text-pink-600" />
+                <span className="text-sm font-bold text-gray-900">Certified Professional</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Users size={20} className="text-pink-600" />
+                <span className="text-sm font-bold text-gray-900">500+ Events Done</span>
               </div>
             </div>
-          </div>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ delay: 0.5 }}
-            className="mt-8 text-center text-gray-600 text-lg italic"
-          >
-            "Bringing the authentic rhythm of tradition to your celebrations"
-          </motion.p>
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
